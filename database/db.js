@@ -96,3 +96,50 @@ const deleteTask = `
   DELETE FROM tasks
   WHERE id=$1
 `
+
+const User = {
+  create: createUserFunction,
+  create: (email, password) => {
+    return db.one( createUser, [ email, password ])
+  },
+  find: id => db.any( findById, [id]),
+  login: (email, password) => {
+    return db.any( findByEmailAndPassword, [ email, password ])
+  },
+  tabs: id => Tab.all( id ),
+  tasks: id => db.any( allTasks, [id] )
+}
+
+const Tab = {
+  create: (id, title) => {
+    return db.one( createTab, [title, id] )
+  },
+  all: id => db.any( allTabsForUser, [id] ),
+  delete: id => Promise.all([
+    db.any( deleteTab, [id] ),
+    db.any( deleteTabTasks, [id] )
+  ])
+}
+
+const Task = {
+  create: (tab_id, description) => {
+    return db.one( createTask, [description, tab_id])
+  },
+  update: (id, value) => {
+    return db.any( updateDescription, [id, value] )
+  },
+  moveUp: (tab_id, rank) => db.any( moveUp, [tab_id, rank]),
+  moveDown: (tab_id, rank) => db.any( moveDown, [tab_id, rank]),
+  setRank: (id, rank) => db.any( setRank, [rank, id]),
+  completeTask: (task_id) => {
+    return db.one( completeTask, [task_id] )
+  },
+  uncompleteTask: (task_id) => {
+    return db.one( uncompleteTask, [task_id] )
+  },
+  delete: id => db.any( deleteTask, [id] )
+}
+
+module.exports = {
+  User, Task, Tab
+}
