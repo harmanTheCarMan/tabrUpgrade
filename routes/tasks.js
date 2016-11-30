@@ -11,10 +11,8 @@ router.post( '/', authorize, (request, response) => {
     .then( result => response.redirect( '/' ))
 })
 
-router.put( '/update/bre/blaj/:id', authorize, (request, response) => {
+router.put( '/update', authorize, (request, response) => {
   const { id, value } = request.body
-  const { id, value } = request.params.id
-
 
   Task.update( id, value )
     .then( result => response.redirect( '/' ))
