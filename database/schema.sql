@@ -1,0 +1,25 @@
+DROP DATABASE IF EXISTS tabr;
+CREATE DATABASE tabr;
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255),
+  password VARCHAR(255)
+);
+
+DROP TABLE IF EXISTS tabs;
+CREATE TABLE tabs (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255),
+  user_id SERIAL NOT NULL
+);
+
+DROP TABLE IF EXISTS tasks;
+CREATE TABLE tasks (
+  id SERIAL PRIMARY KEY,
+  description VARCHAR(255),
+  completed BOOLEAN DEFAULT false,
+  rank INTEGER NOT NULL,
+  tab_id SERIAL
+);
