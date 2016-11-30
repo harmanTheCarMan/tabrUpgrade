@@ -98,7 +98,6 @@ const deleteTask = `
 `
 
 const User = {
-  create: createUserFunction,
   create: (email, password) => {
     return db.one( createUser, [ email, password ])
   },
