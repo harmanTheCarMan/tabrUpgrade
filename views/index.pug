@@ -5,24 +5,42 @@ block content
     p Logged in as #{user.email}
 
     a(href='/users/logout') Logout
-  .container
-    .row
-      .add-tab.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
-        form(action='/tabs', method='post')
-          input.form-control(type='text', name='new-tab' placeholder='Tab Title')
-          .addTabButton.col-xs-7.col-sm-7.col-md-5.col-lg-5.col-xl-5
-            button.btn.btn-primary.btn-sm.btn-block(class='createTabButton' type='submit') Create Tab
+  form.form-inline(action='/tabs', method='post')
+    .form-group
+      input.form-control(type='text', name='new-tab' placeholder='Tab Title')
+    button.btn.btn-primary.createButton(class='createTabButton' type='submit') Create Tab
 
-    .row
-      .add-task.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
-        form(action='/tasks', method='post' )
-          input.form-control(type='text', name='new-task' placeholder='Task Description')
-          .addTaskButton.col-xs-7.col-sm-7.col-md-2.col-lg-2.col-xl-2
-            select(name='tab-id')
-              each tab in tabs
-                option(label=`${tab.title}`, value=`${tab.id}`)
-          .addTaskButton.col-xs-7.col-sm-7.col-md-2.col-lg-2.col-xl-2
-            button.btn.btn-primary.btn-sm.btn-block(type='submit') Create Task
+
+      //-
+      //- .add-tab.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
+      //-   form(action='/tabs', method='post')
+      //-     input.form-control(type='text', name='new-tab' placeholder='Tab Title')
+      //-     br
+      //-     button.btn.btn-primary.btn-sm.btn-block.col-xs-12.col-sm-12.col-md-12.col-lg-12.col-xl-12(class='createTabButton' type='submit') Create Tab
+  br
+
+  form.form-inline(action='/tasks', method='post' )
+    .form-group
+      input.form-control(type='text', name='new-task' placeholder='Task Description')
+      .selectpicker
+      select.btn.btn-secondary.dropdown-toggle.tabDrop(name='tab-id')
+        each tab in tabs
+          option(label=`${tab.title}`, value=`${tab.id}`)
+      button.btn.btn-primary.createButton(type='submit') Create Task
+
+
+
+      //- .add-task.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
+      //- .form-group
+      //-   form(action='/tasks', method='post' )
+      //-     input.form-control(type='text', name='new-task' placeholder='Task Description')
+      //- .addTaskDrop.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
+      //-       select(name='tab-id')
+      //-         each tab in tabs
+      //-           option(label=`${tab.title}`, value=`${tab.id}`)
+      //- .addTaskButton.col-xs-8.col-sm-5.col-md-2.col-lg-2.col-xl-2
+      //-   button.btn.btn-primary.btn-sm.btn-block(type='submit') Create Task
+      //-   br
 
     ul.nav.nav-tabs(role='tablist')
       each tab, index in tabs
