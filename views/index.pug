@@ -49,7 +49,7 @@ block content
               button(type='submit')
                 span.glyphicon.glyphicon-arrow-down
 
-            form(method='post', action='/tasks/delete/')
+            form(method='post', action='/tasks/delete')
               input(type='hidden', name='id', value=`${task.id}`)
               button(type='submit')
                 span.glyphicon.glyphicon-remove-circle

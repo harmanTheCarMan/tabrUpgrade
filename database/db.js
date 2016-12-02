@@ -26,8 +26,9 @@ const createTab = `
 `
 
 const createTask = `
-  INSERT INTO tasks (description, tab_id)
-  VALUES ( $1, $2 )
+  INSERT INTO tasks (description, tab_id, rank)
+  VALUES ($1, $2, ( SELECT COALESCE( MAX(rank), 0 )
+  FROM tasks WHERE tab_id=$2) + 1 )
   RETURNING *
 `
 
@@ -51,7 +52,7 @@ const moveDown = `
   AND rank=$2
 `
 
-const moveUP = `
+const moveUp = `
   UPDATE tasks
   SET rank = rank -1
   WHERE tab_id=$1
@@ -131,10 +132,10 @@ const Task = {
   moveDown: (tab_id, rank) => db.any( moveDown, [tab_id, rank]),
   setRank: (id, rank) => db.any( setRank, [rank, id]),
   completeTask: (task_id) => {
-    return db.one( completeTask, [task_id] )
+    return db.any( completeTask, [task_id] )
   },
   uncompleteTask: (task_id) => {
-    return db.one( uncompleteTask, [task_id] )
+    return db.any( uncompleteTask, [task_id] )
   },
   delete: id => db.any( deleteTask, [id] )
 }

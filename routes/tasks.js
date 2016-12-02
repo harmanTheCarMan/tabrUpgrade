@@ -11,7 +11,7 @@ router.post( '/', authorize, (request, response) => {
     .then( result => response.redirect( '/' ))
 })
 
-router.put( '/update', authorize, (request, response) => {
+router.post( '/update', authorize, (request, response) => {
   const { id, value } = request.body
 
   Task.update( id, value )
@@ -19,7 +19,7 @@ router.put( '/update', authorize, (request, response) => {
     .catch( error => console.log( error ))
 })
 
-router.put( '/completeTask', authorize, (request, response) => {
+router.post( '/completeTask', authorize, (request, response) => {
   const task_id = request.body[ 'id' ]
 
   Task.completeTask( task_id )
@@ -27,14 +27,14 @@ router.put( '/completeTask', authorize, (request, response) => {
     .catch( error => console.log( error ))
 })
 
-router.put( '/uncompleteTask', authorize, (request, response) => {
+router.post( '/uncompleteTask', authorize, (request, response) => {
   const task_id = request.body[ 'id' ]
 
   Task.uncompleteTask( task_id )
     .then( result => response.redirect( '/' ))
     .catch( error => console.log( error ))})
 
-router.put( '/up', authorize, (request, response) => {
+router.post( '/up', authorize, (request, response) => {
   const rank = parseInt( request.body.rank )
   const id = request.body.id
   const tab_id = request.body[ 'tab-id' ]
@@ -44,7 +44,7 @@ router.put( '/up', authorize, (request, response) => {
     .then( result => response.redirect( '/' ))
 })
 
-router.put( '/down', authorize, (request, response) => {
+router.post( '/down', authorize, (request, response) => {
   const rank = parseInt( request.body.rank )
   const id = request.body.id
   const tab_id = request.body[ 'tab-id' ]
@@ -54,7 +54,7 @@ router.put( '/down', authorize, (request, response) => {
     .then( result => response.redirect( '/' ))
 })
 
-router.delete( '/delete/', authorize, (request, response) => {
+router.post( '/delete', authorize, (request, response) => {
   Task.delete( request.body.id )
     .then( result => response.redirect( '/' ))
     .catch( error => console.log( error ))

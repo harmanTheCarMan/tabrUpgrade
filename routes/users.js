@@ -8,26 +8,27 @@ const loginRedirects = {
   failureRedirect: '/users/login'
 }
 
-router.get( '/register', (request, res, next) => {
+router.get( '/register', (req, res, next) => {
   res.render('register')
 })
 
-router.post( '/register', (request, res) => {
-  const { email, password } = request.body
+router.post( '/register', (req, res) => {
+  const { email, password } = req.body
 
   User.create( email, password )
     .then( user => {
-      request.login( user, error => {
+      req.login( user, error => {
         if( error ) {
           return next( error )
         }
+
         res.redirect('/')
       })
     })
 })
 
-router.get( '/login', (request, res, next) => {
-  res.render('login', { user: request.user})
+router.get( '/login', (req, res, next) => {
+  res.render('login', { user: req.user})
 })
 
 router.post('/login', passport.authenticate( 'local', loginRedirects ))
