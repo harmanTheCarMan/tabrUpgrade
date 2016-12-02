@@ -3,53 +3,57 @@ extends layout
 block content
   if( user )
     p Logged in as #{user.email}
+
     a(href='/users/logout') Logout
-  .add-tab
-    form(action='/tabs', method='post')
-      input(type='text', name='new-tab' placeholder='Tab Title')
-      button(type='submit') Create Tab
+  .container
+    .row
+      .add-tab.col-md-2
+        form(action='/tabs', method='post')
+          input.form-control(type='text', name='new-tab' placeholder='Tab Title')
+          button.btn.btn-primary.btn-sm.btn-block(class='createTabButton' type='submit') Create Tab
+  .container
+    .row
+      .add-task.col-md-2
+        form(action='/tasks', method='post' )
+          input.form-control(type='text', name='new-task' placeholder='Task Description')
+          select(name='tab-id')
+            each tab in tabs
+              option(label=`${tab.title}`, value=`${tab.id}`)
+          button.btn.btn-primary.btn-sm.btn-block(type='submit') Create Task
 
-  .add-task
-    form(action='/tasks', method='post' )
-      select(name='tab-id')
-        each tab in tabs
-          option(label=`${tab.title}`, value=`${tab.id}`)
-      input(type='text', name='new-task' placeholder='Task Description')
-      button(type='submit') Create Task
+    ul.nav.nav-tabs(role='tablist')
+      each tab, index in tabs
+        li(role='presentation', class=`${index === 0 ? 'active' : ''}`)
+          a(href=`#tab-${tab.id}`, aria-controls=`${tab.title}`, role='tab', data-toggle='tab')= tab.title
 
-  ul.nav.nav-tabs(role='tablist')
-    each tab, index in tabs
-      li(role='presentation', class=`${index === 0 ? 'active' : ''}`)
-        a(href=`#tab-${tab.id}`, aria-controls=`${tab.title}`, role='tab', data-toggle='tab')= tab.title
+    .tab-content
+      each tab, index in tabs
+        div.tab-pane(role='tabpanel', id=`tab-${tab.id}`, class=`${index === 0 ? 'active' : ''}`)
+          form(method='post', action='/tabs/delete')
+            input.form-control(type='hidden', name='id', value=`${tab.id}`)
+            button.btn.btn-warning(type='submit')
+              span.glyphicon.glyphicon-remove-circle
 
-  .tab-content
-    each tab, index in tabs
-      div.tab-pane(role='tabpanel', id=`tab-${tab.id}`, class=`${index === 0 ? 'active' : ''}`)
-        form(method='post', action='/tabs/delete')
-          input(type='hidden', name='id', value=`${tab.id}`)
-          button.btn.btn-warning(type='submit')
-            span.glyphicon.glyphicon-remove-circle
+          each task in tab.tasks
+            .task(data-id=`${task.id}`)
+              input(type='checkbox', checked=task.completed, data-id=task.id)
+              input.form-control.task-description(type='text', data-id=task.id, value=task.description)
 
-        each task in tab.tasks
-          .task(data-id=`${task.id}`)
-            input(type='checkbox', checked=task.completed, data-id=task.id)
-            input.task-description(type='text', data-id=task.id, value=task.description)
+              form(method='post', action='/tasks/up')
+                input(type='hidden', name='rank', value=`${task.rank}`)
+                input(type='hidden', name='id', value=`${task.id}`)
+                input(type='hidden', name='tab-id', value=`${tab.id}`)
+                button(type='submit')
+                  span.glyphicon.glyphicon-arrow-up
 
-            form(method='post', action='/tasks/up')
-              input(type='hidden', name='rank', value=`${task.rank}`)
-              input(type='hidden', name='id', value=`${task.id}`)
-              input(type='hidden', name='tab-id', value=`${tab.id}`)
-              button(type='submit')
-                span.glyphicon.glyphicon-arrow-up
+              form(method='post', action='/tasks/down')
+                input(type='hidden', name='rank', value=`${task.rank}`)
+                input(type='hidden', name='id', value=`${task.id}`)
+                input(type='hidden', name='tab-id', value=`${tab.id}`)
+                button(type='submit')
+                  span.glyphicon.glyphicon-arrow-down
 
-            form(method='post', action='/tasks/down')
-              input(type='hidden', name='rank', value=`${task.rank}`)
-              input(type='hidden', name='id', value=`${task.id}`)
-              input(type='hidden', name='tab-id', value=`${tab.id}`)
-              button(type='submit')
-                span.glyphicon.glyphicon-arrow-down
-
-            form(method='post', action='/tasks/delete')
-              input(type='hidden', name='id', value=`${task.id}`)
-              button(type='submit')
-                span.glyphicon.glyphicon-remove-circle
+              form(method='post', action='/tasks/delete')
+                input(type='hidden', name='id', value=`${task.id}`)
+                button(type='submit')
+                  span.glyphicon.glyphicon-remove-circle

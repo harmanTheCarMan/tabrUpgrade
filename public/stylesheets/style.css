@@ -1,3 +1,31 @@
 .group-inline {
   display:inline-block;
 }
+
+.forms {
+  margin-top: 60px;
+  margin-left: 38%;
+}
+
+.newaccount {
+  font-size: 10pt;
+  margin-left: 40%;
+}
+.add-tab {
+  margin: 10px;
+
+}
+.createTabButton {
+ margin-left: 10px;
+}
+
+.createTaskButton {
+
+}
+ .add-task {
+margin-left: 10px;
+}
+
+.dropDown {
+
+}
